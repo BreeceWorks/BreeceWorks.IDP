@@ -2,10 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using BreeceWorks.IDP.Areas.Identity.Data;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,14 +31,17 @@ namespace BreeceWorks.IDP
     "Data Source=DESKTOP-0BPCUCG;Initial Catalog=BreeceWorksIDP;Integrated Security=true;MultipleActiveResultSets=True;";
 
 
-            // uncomment, if you want to add an MVC-based UI
-            services.AddControllersWithViews();
+            services.AddMvc();
 
-            var builder = services.AddIdentityServer()
-                //.AddInMemoryIdentityResources(Config.Ids)
-                //.AddInMemoryApiResources(Config.Apis)
-                //.AddInMemoryClients(Config.Clients)
-                .AddTestUsers(TestUsers.Users);
+            services.AddTransient<IEmailSender, DummyEmailSender>();
+
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+            }).AddAspNetIdentity<ApplicationUser>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -59,7 +64,7 @@ namespace BreeceWorks.IDP
                     builder.UseSqlServer(breeceWorksIDPDataDBConnectionString,
                     options => options.MigrationsAssembly(migrationsAssembly));
             });
-
+            services.AddAuthentication();
         }
 
 
@@ -83,7 +88,9 @@ namespace BreeceWorks.IDP
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
         }
 

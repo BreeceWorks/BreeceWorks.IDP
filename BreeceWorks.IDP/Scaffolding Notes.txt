@@ -1,0 +1,8 @@
+For a reason I was not able to identify, I could not add Identity scaffolding through the UI.  
+First I manually added the UserDbContext and ApplicationUser files.
+Then I used the command line to add the Identity scaffold pages.
+
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet aspnet-codegenerator identity --help 
+dotnet aspnet-codegenerator identity -dc BreeceWorks.IDP.Contexts.UserDbContext --listfiles
+dotnet aspnet-codegenerator identity -dc BreeceWorks.IDP.Contexts.UserDbContext --files Account.Register

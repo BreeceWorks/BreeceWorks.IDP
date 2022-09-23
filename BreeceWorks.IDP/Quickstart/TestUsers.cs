@@ -21,10 +21,12 @@ namespace BreeceWorks.IDP
 
                  Claims = new List<Claim>
                  {
-                     new Claim("given_name", "Frank"),
-                     new Claim("family_name", "Underwood"),
-                     new Claim("address", "Main Road 1"),
-                     new Claim("role", "FreeUser"),
+                     new Claim(JwtClaimTypes.Name, "Frank Underwood"),
+                     new Claim(JwtClaimTypes.GivenName, "Frank"),
+                     new Claim(JwtClaimTypes.FamilyName, "Underwood"),
+                     new Claim(JwtClaimTypes.Address, "Main Road 1"),
+                     new Claim(JwtClaimTypes.Email, "frank.underwood@email.com"),
+                     new Claim(JwtClaimTypes.Role, "FreeUser"),
                      new Claim("subscriptionlevel", "FreeUser"),
                      new Claim("country", "nl")
                  }
@@ -37,14 +39,49 @@ namespace BreeceWorks.IDP
 
                  Claims = new List<Claim>
                  {
-                     new Claim("given_name", "Claire"),
-                     new Claim("family_name", "Underwood"),
-                     new Claim("address", "Big Street 2"),
-                     new Claim("role", "PayingUser"),
+                     new Claim(JwtClaimTypes.Name, "Claire Underwood"),
+                     new Claim(JwtClaimTypes.GivenName, "Claire"),
+                     new Claim(JwtClaimTypes.FamilyName, "Underwood"),
+                     new Claim(JwtClaimTypes.Address, "Big Street 2"),
+                     new Claim(JwtClaimTypes.Email, "claire.underwood@email.com"),
+                     new Claim(JwtClaimTypes.Role, "PayingUser"),
                      new Claim("subscriptionlevel", "PayingUser"),
                      new Claim("country", "be")
                  }
-             }
+             },
+             new TestUser{
+                 SubjectId = "06c71238-0137-4df6-bb6a-e50e62a4a7c5", 
+                 Username = "Jack", 
+                 Password = "password",
+
+                Claims =
+                {
+                    new Claim(JwtClaimTypes.Name, "Jack Torrance"),
+                    new Claim(JwtClaimTypes.GivenName, "Jack"),
+                    new Claim(JwtClaimTypes.FamilyName, "Torrance"),
+                    new Claim(JwtClaimTypes.Email, "jack.torrance@email.com"),
+                    new Claim(JwtClaimTypes.Role, "PayingUser"),
+                    new Claim("subscriptionlevel", "PayingUser"),
+                    new Claim("country", "BE")
+                }
+            },
+            new TestUser{
+                SubjectId = "37d0f2fa-1069-489f-9d65-48c9ba44639b", 
+                Username = "Wendy", 
+                Password = "password",
+
+                Claims =
+                {
+                    new Claim(JwtClaimTypes.Name, "Wendy Torrance"),
+                    new Claim(JwtClaimTypes.GivenName, "Wendy"),
+                    new Claim(JwtClaimTypes.FamilyName, "Torrance"),
+                    new Claim(JwtClaimTypes.Email, "wendy.torrance@email.com"),
+                    new Claim(JwtClaimTypes.Role, "FreeUser"),
+                    new Claim("subscriptionlevel", "FreeUser"),
+                    new Claim("country", "NL")
+                }
+            }
+
          };
 
     }
