@@ -3,7 +3,7 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using System.Security.Claims;
 
-namespace BreeceWorks.IDP.Services
+namespace BreeceWorks.IDP.DuendeIdentityServer.Services
 {
     public class LocalUserProfileService : IProfileService
     {

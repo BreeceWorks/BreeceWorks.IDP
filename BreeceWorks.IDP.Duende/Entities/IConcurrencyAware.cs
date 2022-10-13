@@ -1,4 +1,4 @@
-﻿namespace BreeceWorks.IDP.Entities
+﻿namespace BreeceWorks.IDP.DuendeIdentityServer.Entities
 {
     public interface IConcurrencyAware
     {

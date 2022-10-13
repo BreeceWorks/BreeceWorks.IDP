@@ -1,6 +1,6 @@
-﻿using BreeceWorks.IDP.Entities;
+﻿using BreeceWorks.IDP.DuendeIdentityServer.Entities;
 
-namespace BreeceWorks.IDP.Services
+namespace BreeceWorks.IDP.DuendeIdentityServer.Services
 {
     public interface ILocalUserService
     {
@@ -18,10 +18,13 @@ namespace BreeceWorks.IDP.Services
             string subject);
 
         void AddUser
-            (User userToAdd);
+            (User userToAdd,
+            string password);
 
         Task<bool> IsUserActive(
             string subject);
+
+        Task<bool> ActivateUserAsync(string securityCode);
 
         Task<bool> SaveChangesAsync();
     }

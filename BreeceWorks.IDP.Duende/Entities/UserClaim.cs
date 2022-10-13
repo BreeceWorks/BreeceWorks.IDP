@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BreeceWorks.IDP.Entities
+namespace BreeceWorks.IDP.DuendeIdentityServer.Entities
 {
     public class UserClaim : IConcurrencyAware
     {
