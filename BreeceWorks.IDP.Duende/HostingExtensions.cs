@@ -1,5 +1,6 @@
 using BreeceWorks.IDP.DuendeIdentityServer.DbContexts;
 using BreeceWorks.IDP.DuendeIdentityServer.Services;
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -12,6 +13,20 @@ internal static class HostingExtensions
     public static WebApplication ConfigureServices(
         this WebApplicationBuilder builder)
     {
+        // configures IIS out-of-proc settings 
+        builder.Services.Configure<IISOptions>(iis =>
+        {
+            iis.AuthenticationDisplayName = "Windows";
+            iis.AutomaticAuthentication = false;
+        });
+        // ..or configures IIS in-proc settings
+        builder.Services.Configure<IISServerOptions>(iis =>
+        {
+            iis.AuthenticationDisplayName = "Windows";
+            iis.AutomaticAuthentication = false;
+        });
+
+
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
 
@@ -38,6 +53,33 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryClients(Config.Clients);
+
+        builder.Services
+             .AddAuthentication()
+             .AddOpenIdConnect("AAD", "Azure Active Directory", options =>
+             {
+                 options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                 options.Authority = "https://login.microsoftonline.com/8d5ed9c5-d147-480d-8fcb-0203dfcbe1c1/v2.0";
+                 options.ClientId = "00340bed-0245-4713-8a2f-99efd524ef5c";
+                 options.ClientSecret = "eQ98Q~P7fyx4bUTNJtBhpQNKBj~_EnI9X2uZ1chQ";
+                 options.ResponseType = "code";
+                 options.CallbackPath = new PathString("/signin-aad/");
+                 options.SignedOutCallbackPath = new PathString("/signout-aad/");
+                 options.Scope.Add("email");
+                 options.Scope.Add("offline_access");
+                 options.SaveTokens = true;
+             });
+
+        builder.Services.AddAuthentication()
+            .AddFacebook("Facebook",
+               options =>
+               {
+                   options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                   options.AppId = "799498951329302";
+                   options.AppSecret = "a9633a2d2d169f84f7a0b32a56798382";
+               });
+
+
 
 
         return builder.Build();
