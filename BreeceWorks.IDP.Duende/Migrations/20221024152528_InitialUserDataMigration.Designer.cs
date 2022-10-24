@@ -3,6 +3,7 @@ using System;
 using BreeceWorks.IDP.DuendeIdentityServer.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,50 +12,54 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20221018134626_AddUserLogin")]
-    partial class AddUserLogin
+    [Migration("20221024152528_InitialUserDataMigration")]
+    partial class InitialUserDataMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("BreeceWorks.IDP.DuendeIdentityServer.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Password")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("SecurityCode")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("SecurityCodeExpirationDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Subject")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -62,7 +67,8 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                         .IsUnique();
 
                     b.HasIndex("UserName")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Users");
 
@@ -71,9 +77,9 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                         {
                             Id = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Active = true,
-                            ConcurrencyStamp = "e01f9708-358f-4dfa-9417-b08ab49aae05",
+                            ConcurrencyStamp = "f8c18703-227f-4a1a-a4ec-e7ce30ab5e0c",
                             Email = "david@someprovider.com",
-                            Password = "password",
+                            Password = "AQAAAAEAACcQAAAAEIi0HEeTvqcxwhA+dR/RKOEIfdGn1VIKy0P+AhKOp5vIdsb80zmPxqbhxllt5AmkKg==",
                             SecurityCodeExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Subject = "d860efca-22d9-47fd-8249-791ba61b07c7",
                             UserName = "David"
@@ -82,9 +88,9 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                         {
                             Id = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Active = true,
-                            ConcurrencyStamp = "7cf9db7e-9606-4d8f-b60b-94f6b405db0f",
+                            ConcurrencyStamp = "641e0bad-1617-4f8a-afdc-bc64fecd8ecf",
                             Email = "emma@someprovider.com",
-                            Password = "password",
+                            Password = "AQAAAAEAACcQAAAAEHgXILmaP4pu/Kz8M2cASmfD/XsHykcmTNyFTvQQiwyWaLWjWAlxBH1L5pQfSyRYqw==",
                             SecurityCodeExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Subject = "b7539694-97e7-4dfe-84da-b4256e1ff5c7",
                             UserName = "Emma"
@@ -95,24 +101,24 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -123,64 +129,64 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c809c92f-77af-468d-9a38-a501e61adb36"),
-                            ConcurrencyStamp = "f2c6b225-3718-4171-a1e7-9248160658cf",
+                            Id = new Guid("ed13733c-1793-4851-9b52-986a36ef4d55"),
+                            ConcurrencyStamp = "eb2d6b74-e19e-473a-b157-265e903bd80f",
                             Type = "given_name",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "David"
                         },
                         new
                         {
-                            Id = new Guid("263ec6d3-5726-4eed-a8ce-5e1856f175ee"),
-                            ConcurrencyStamp = "35445bd3-6459-47d0-ada5-2f2bec577421",
+                            Id = new Guid("0955bf39-82d8-4d12-95a4-c59d81c7bfdb"),
+                            ConcurrencyStamp = "661ea914-64fb-4fd4-8253-abcee91a3ba2",
                             Type = "family_name",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "Flagg"
                         },
                         new
                         {
-                            Id = new Guid("886e1119-ef65-4dd3-a7f3-5f2bb10330bd"),
-                            ConcurrencyStamp = "03a6ccf2-c4aa-4ebb-86fe-60ad9fbf07a6",
+                            Id = new Guid("9a042815-ecc5-4bdd-9f3e-67e51e082ee1"),
+                            ConcurrencyStamp = "3e885aaa-55c2-4364-b609-4a3665f75a0b",
                             Type = "country",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "nl"
                         },
                         new
                         {
-                            Id = new Guid("abd63f48-d9ce-454f-bc19-e8683fae6668"),
-                            ConcurrencyStamp = "3d288b5b-80a1-4770-b582-6aab2520b7a1",
+                            Id = new Guid("b8eeef86-34d3-49e6-b490-09ec65cba140"),
+                            ConcurrencyStamp = "0481aad7-4404-4f0d-9a4e-0d4b56292613",
                             Type = "role",
                             UserId = new Guid("13229d33-99e0-41b3-b18d-4f72127e3971"),
                             Value = "FreeUser"
                         },
                         new
                         {
-                            Id = new Guid("ab71e05a-1dd9-42ec-9939-333b844cc525"),
-                            ConcurrencyStamp = "8ce49aaa-13da-45f9-8dbf-11364ac9df75",
+                            Id = new Guid("033d0098-8c88-401f-876a-8477fcf07d14"),
+                            ConcurrencyStamp = "073deb96-28bc-4690-be07-7fbb32e19795",
                             Type = "given_name",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "Emma"
                         },
                         new
                         {
-                            Id = new Guid("9bd77db3-9eb8-4686-824f-bab7fbe3233d"),
-                            ConcurrencyStamp = "544d9628-ba05-4c3e-9948-9332dd59fc61",
+                            Id = new Guid("19155723-df21-4e0b-96fb-4f33971a8eda"),
+                            ConcurrencyStamp = "a51d131f-ded1-4df7-8e10-3ee482e54540",
                             Type = "family_name",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "Flagg"
                         },
                         new
                         {
-                            Id = new Guid("1274985d-5e99-4f79-992c-a8d312a617a2"),
-                            ConcurrencyStamp = "4f3a644e-5542-40a6-adf7-e28deca4a736",
+                            Id = new Guid("5d1a0865-502f-492b-a4fd-bd4c9f9fe283"),
+                            ConcurrencyStamp = "6994c575-7db5-40a0-9222-364d8c12114c",
                             Type = "country",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "be"
                         },
                         new
                         {
-                            Id = new Guid("fd4f3498-6b07-42b2-ad9d-c2dd9196d17f"),
-                            ConcurrencyStamp = "e6929c9a-33b4-49f5-8186-e216169a3baa",
+                            Id = new Guid("28c8d790-f8da-48a8-b549-71569b770498"),
+                            ConcurrencyStamp = "8cb13a31-dca0-44d6-8f37-f3e6e14a64cc",
                             Type = "role",
                             UserId = new Guid("96053525-f4a5-47ee-855e-0ea77fa6c55a"),
                             Value = "PayingUser"
@@ -191,29 +197,56 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Provider")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ProviderIdentityKey")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("UserLogins");
+                });
+
+            modelBuilder.Entity("BreeceWorks.IDP.DuendeIdentityServer.Entities.UserSecret", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Secret")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSecrets");
                 });
 
             modelBuilder.Entity("BreeceWorks.IDP.DuendeIdentityServer.Entities.UserClaim", b =>
@@ -238,11 +271,24 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BreeceWorks.IDP.DuendeIdentityServer.Entities.UserSecret", b =>
+                {
+                    b.HasOne("BreeceWorks.IDP.DuendeIdentityServer.Entities.User", "User")
+                        .WithMany("Secrets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BreeceWorks.IDP.DuendeIdentityServer.Entities.User", b =>
                 {
                     b.Navigation("Claims");
 
                     b.Navigation("Logins");
+
+                    b.Navigation("Secrets");
                 });
 #pragma warning restore 612, 618
         }

@@ -103,6 +103,7 @@ public class Index : PageModel
                     .GetUserSecretAsync(user.Subject, "TOTP");
                 if (userSecret == null)
                 {
+                    //TODO: add functionality to create second factor from this page and when registering user
                     ModelState.AddModelError("usersecret",
                         "No second factor secret has been registered - " +
                         "please contact the helpdesk.");
