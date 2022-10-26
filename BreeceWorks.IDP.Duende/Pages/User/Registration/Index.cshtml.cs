@@ -87,8 +87,8 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Pages.User.Registration
             var activationLink = Url.PageLink("/user/activation/index",
                 values: new { securityCode = userToCreate.SecurityCode });
 
-            Console.WriteLine(activationLink);
-            return Redirect("~/User/ActivationCodeSent");
+            //Console.WriteLine(activationLink);
+            return Redirect("~/User/ActivationCodeSent?activationLink=" + activationLink);
 
             //// Issue authentication cookie (log the user in)
             //var isUser = new IdentityServerUser(userToCreate.Subject)

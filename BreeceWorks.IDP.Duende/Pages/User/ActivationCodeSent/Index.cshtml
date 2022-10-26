@@ -3,4 +3,17 @@
 @{
     <h3 class="panel-title">User Registration</h3>
     <h3>You've successfully registered.  Check your e-mail to activate your account. </h3>
+    <div>
+        <div>
+            <div>A fully implemented version of this would send an email with this activation link:</div>
+            <div><label>@Model.ViewModel.ActivationLink</label></div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <div>Test the link here:</div>
+            <div><a href="@Model.ViewModel.ActivationLink">Click Here To Activate Your Account</a></div>
+        </div>
+    </div>
+
 }

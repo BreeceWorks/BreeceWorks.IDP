@@ -17,7 +17,8 @@
         <div class="col-sm-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Scan the QR code with your authenticator application, or manually enter the code you see underneath the QR code in your authenticator application</h3>
+                    <h3 class="panel-title">Scan the QR code with your authenticator application (i.e. Google Authenticate), or manually enter the code you see underneath the QR code in your authenticator application</h3>
+                    <h3>After registering with the authenticator application, you mush click the "Complete Registration" button.</h3>
                 </div>
                 <div class="panel-body">
                     <form asp-page="/MfaRegistration/Index">
@@ -28,7 +29,7 @@
                             </div>
                             <div id="qrCodeKeyUri">@Model.View.KeyUri</div>
                             <div class="form-group">
-                                <button class="btn btn-primary">Registration successful</button>
+                                <button class="btn btn-primary">Complete Registration</button>
                             </div>
                         </fieldset>
                     </form>

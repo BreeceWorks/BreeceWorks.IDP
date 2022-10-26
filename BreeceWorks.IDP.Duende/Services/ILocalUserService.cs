@@ -5,7 +5,7 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Services
 {
     public interface ILocalUserService
     {
-        Task<UserSecret> GetUserSecretAsync(string subject, string name);
+        Task<ICollection<UserSecret>> GetUserSecretsAsync(string subject, string name);
 
         Task<bool> AddUserSecret(string subject, string name, string secret);
 
@@ -24,6 +24,10 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Services
            IEnumerable<Claim> claims);
 
         Task<bool> ValidateCredentialsAsync(
+             string userName,
+             string password);
+
+        Task<bool> ValidateInActiveCredentialsAsync(
              string userName,
              string password);
 

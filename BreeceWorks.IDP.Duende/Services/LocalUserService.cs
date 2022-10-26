@@ -3,6 +3,7 @@ using BreeceWorks.IDP.DuendeIdentityServer.Entities;
 using BreeceWorks.IDP.DuendeIdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
@@ -153,7 +154,7 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Services
             return true;
         }
 
-        public async Task<UserSecret> GetUserSecretAsync(
+        public async Task<ICollection<UserSecret>> GetUserSecretsAsync(
             string subject, string name)
         {
             if (string.IsNullOrWhiteSpace(subject))
@@ -166,8 +167,7 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Services
                 throw new ArgumentNullException(nameof(name));
             }
 
-            return await _context.UserSecrets
-                .FirstOrDefaultAsync(u => u.User.Subject == subject && u.Name == name);
+            return await _context.UserSecrets.Where(u=>u.User.Subject == subject && u.Name == name).ToListAsync();
         }
 
         public async Task<bool> IsUserActive(string subject)
@@ -216,6 +216,37 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Services
             return (verificationResult == PasswordVerificationResult.Success);
 
         }
+
+        public async Task<bool> ValidateInActiveCredentialsAsync(string userName,
+  string password)
+        {
+            if (string.IsNullOrWhiteSpace(userName) ||
+                string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+
+            var user = await GetUserByUserNameAsync(userName);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (user.Active)
+            {
+                return false;
+            }
+
+            // Validate credentials
+            // return (user.Password == password);
+            var verificationResult =
+                _passwordHasher.VerifyHashedPassword(
+                    user, user.Password, password);
+            return (verificationResult == PasswordVerificationResult.Success);
+
+        }
+
 
         public async Task<User> GetUserByUserNameAsync(string userName)
         {

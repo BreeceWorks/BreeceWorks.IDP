@@ -1,3 +1,4 @@
+using BreeceWorks.IDP.DuendeIdentityServer.Entities;
 using BreeceWorks.IDP.DuendeIdentityServer.Services;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
@@ -99,9 +100,9 @@ public class Index : PageModel
 
                 // validate the second factor 
                 // first, get the totp secret for this user 
-                var userSecret = await _localUserService
-                    .GetUserSecretAsync(user.Subject, "TOTP");
-                if (userSecret == null)
+                var userSecrets = await _localUserService
+                    .GetUserSecretsAsync(user.Subject, "TOTP");
+                if (userSecrets == null)
                 {
                     //TODO: add functionality to create second factor from this page and when registering user
                     ModelState.AddModelError("usersecret",
@@ -114,14 +115,23 @@ public class Index : PageModel
                 // validate the inputted totp 
                 var authenticator = new TwoStepsAuthenticator
                     .TimeAuthenticator();
-                if (!authenticator.CheckCode(userSecret.Secret,
+                Boolean IsValidTotp = new Boolean();
+
+                foreach(UserSecret userSecret in userSecrets)
+                {
+                    if (authenticator.CheckCode(userSecret.Secret,
                     Input.Totp, user))
+                    {
+                        IsValidTotp = true;
+                        break;
+                    }
+                }
+                if (!IsValidTotp)
                 {
                     ModelState.AddModelError("totp", "TOTP is invalid.");
                     await BuildModelAsync(Input.ReturnUrl);
                     return Page();
                 }
-
 
                 await _events.RaiseAsync(new UserLoginSuccessEvent(
                     user.UserName, user.Subject, user.UserName,
