@@ -29,6 +29,15 @@ public static class Config
                      "imagegalleryapi.read",
                      "imagegalleryapi.write"},
                 ApiSecrets = { new Secret("apisecret".Sha256()) }
+             },
+             new ApiResource("breecemartapi",
+                 "BreeceMart API",
+                 new [] { "role", "country" })
+             {
+                 Scopes = { "breecemartapi.fullaccess",
+                     "breecemartapi.read",
+                     "breecemartapi.write"},
+                ApiSecrets = { new Secret("apisecret".Sha256()) }
              }
          };
 
@@ -38,9 +47,12 @@ public static class Config
             {
                 new ApiScope("imagegalleryapi.fullaccess"),
                 new ApiScope("imagegalleryapi.read"),
-                new ApiScope("imagegalleryapi.write")};
+                new ApiScope("imagegalleryapi.write"),
+                new ApiScope("breecemartapi.fullaccess"),
+                new ApiScope("breecemartapi.read"),
+                new ApiScope("breecemartapi.write")};
 
-    public static IEnumerable<Client> Clients =>
+public static IEnumerable<Client> Clients =>
         new Client[]
             {
                 new Client()
@@ -70,6 +82,41 @@ public static class Config
                         //"imagegalleryapi.fullaccess",
                         "imagegalleryapi.read",
                         "imagegalleryapi.write",
+                        "country"
+                    },
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }, 
+                    // RequireConsent = true
+                },
+                new Client()
+                {
+                    ClientName = "BreeceMart",
+                    ClientId = "breecemartclient",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AccessTokenType = AccessTokenType.Reference,
+                    AllowOfflineAccess = true,
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    AccessTokenLifetime = 120,
+                    // AuthorizationCodeLifetime = ...
+                    // IdentityTokenLifetime = ...
+                    RedirectUris =
+                    {
+                        "https://localhost:7045/signin-oidc"
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "https://localhost:7045/signout-callback-oidc"
+                    },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "roles",
+                        //"imagegalleryapi.fullaccess",
+                        "breecemartapi.read",
+                        "breecemartapi.write",
                         "country"
                     },
                     ClientSecrets =

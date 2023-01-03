@@ -102,7 +102,7 @@ public class Index : PageModel
                 // first, get the totp secret for this user 
                 var userSecrets = await _localUserService
                     .GetUserSecretsAsync(user.Subject, "TOTP");
-                if (userSecrets == null)
+                if (userSecrets == null  || userSecrets.Count < 1)
                 {
                     //TODO: add functionality to create second factor from this page and when registering user
                     ModelState.AddModelError("usersecret",

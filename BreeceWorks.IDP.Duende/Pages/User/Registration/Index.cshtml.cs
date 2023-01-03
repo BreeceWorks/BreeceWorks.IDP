@@ -68,6 +68,36 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Pages.User.Registration
 
             userToCreate.Claims.Add(new Entities.UserClaim()
             {
+                Type = "cashier_store_number",
+                Value = "1"
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = "cashier_store_number",
+                Value = "2"
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = "cashier_store_number",
+                Value = "3"
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = "cashier_store_number",
+                Value = "42"
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
+                Type = "cashier_store_number",
+                Value = "56"
+            });
+
+            userToCreate.Claims.Add(new Entities.UserClaim()
+            {
                 Type = JwtClaimTypes.GivenName,
                 Value = Input.GivenName
             });
