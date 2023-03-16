@@ -16,6 +16,9 @@ namespace BreeceWorks.IDP.DuendeIdentityServer.Entities
 
         [MaxLength(200)]
         public string Password { get; set; }
+        public Int32 InvalidLoginAttempts { get; set; }
+        public DateTime LastPasswordChangeDate { get; set; }
+        public Boolean PasswordResetRequired { get; set; }
 
         [Required]
         public bool Active { get; set; }
